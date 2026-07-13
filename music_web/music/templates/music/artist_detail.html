@@ -1,0 +1,33 @@
+{% extends 'music/base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{ artist.pic_url }}" class="img-fluid rounded" alt="{{ artist.name }}">
+    </div>
+    <div class="col-md-8">
+        <h2>{{ artist.name }}</h2>
+        <p>原始链接：<a href="{{ artist.origin_url }}" target="_blank">{{ artist.origin_url }}</a></p>
+        <h4>简介</h4>
+        <p>{{ artist.intro|default:"暂无简介" }}</p>
+    </div>
+</div>
+
+<hr>
+<h3>歌曲列表</h3>
+<div class="row">
+    {% for song in songs %}
+    <div class="col-md-2 col-sm-4 mb-3">
+        <div class="card">
+            <a href="{% url 'song_detail' song.id %}">
+                <img src="{{ song.cover_url }}" class="card-img-top" alt="{{ song.name }}">
+            </a>
+            <div class="card-body p-2">
+                <small><a href="{% url 'song_detail' song.id %}" class="text-decoration-none">{{ song.name }}</a></small>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>暂无歌曲</p>
+    {% endfor %}
+</div>
+{% endblock %}

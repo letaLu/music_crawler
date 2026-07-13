@@ -1,0 +1,17 @@
+#虚拟环境
+.venv-1
+
+#课件
+2026w1d3_a_shabby_crawler.ipynb
+
+#一些补丁
+add_artist_image.py
+add_missing_songs.py
+ensure_every_artist_has_song.py
+fill_artists.py
+fixer.py
+hw_01.py
+
+#爬取数据
+netease_data/
+

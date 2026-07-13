@@ -1,0 +1,55 @@
+{% extends 'music/base.html' %}
+{% block content %}
+<h2>搜索结果</h2>
+<p>
+    关键词：<strong>{{ query }}</strong> |
+    类型：{% if search_type == 'song' %}歌曲{% else %}歌手{% endif %} |
+    共 {{ count }} 条结果，耗时 {{ elapsed }} 秒
+</p>
+
+{% if search_type == 'song' %}
+    <!-- 歌曲结果 -->
+    <div class="row">
+        {% for song in results %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'song_detail' song.id %}">
+                    <img src="{{ song.cover_url }}" class="card-img-top" alt="{{ song.name }}">
+                </a>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <a href="{% url 'song_detail' song.id %}" class="text-decoration-none">{{ song.name }}</a>
+                    </h6>
+                    <small class="text-muted">{{ song.artist_names }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>未找到相关歌曲</p>
+        {% endfor %}
+    </div>
+{% else %}
+    <!-- 歌手结果 -->
+    <div class="row">
+        {% for artist in results %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'artist_detail' artist.id %}">
+                    <img src="{{ artist.pic_url }}" class="card-img-top" alt="{{ artist.name }}">
+                </a>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <a href="{% url 'artist_detail' artist.id %}" class="text-decoration-none">{{ artist.name }}</a>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>未找到相关歌手</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- 分页导航 -->
+{% include 'music/pagination.html' with page_obj=results %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'music/base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{ song.cover_url }}" class="img-fluid rounded" alt="{{ song.name }}">
+    </div>
+    <div class="col-md-8">
+        <h2>{{ song.name }}</h2>
+        <p>
+            歌手：
+            {% for artist in artist_links %}
+                {% if artist.id %}
+                    <a href="{% url 'artist_detail' artist.id %}">{{ artist.name }}</a>
+                {% else %}
+                    {{ artist.name }}
+                {% endif %}
+                {% if not forloop.last %} / {% endif %}
+            {% endfor %}
+        </p>
+        <p>原始链接：<a href="{{ song.origin_url }}" target="_blank">{{ song.origin_url }}</a></p>
+        <h4 class="mt-4">歌词</h4>
+        <pre>{{ song.lyric }}</pre>
+    </div>
+</div>
+
+<hr>
+<h3>评论 ({{ comments.count }})</h3>
+<div class="list-group mb-3">
+    {% for comment in comments %}
+    <div class="list-group-item d-flex justify-content-between align-items-start">
+        <div>
+            <p class="mb-1">{{ comment.content }}</p>
+            <small class="text-muted">{{ comment.created_at|date:"Y-m-d H:i:s" }}</small>
+        </div>
+        <a href="{% url 'delete_comment' comment.id %}" class="btn btn-sm btn-danger ms-3" onclick="return confirm('确定删除吗？')">删除</a>
+    </div>
+    {% empty %}
+    <p class="text-muted">暂无评论，来写第一条吧！</p>
+    {% endfor %}
+</div>
+
+<form method="post" action="{% url 'song_detail' song.id %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <textarea name="content" class="form-control" rows="2" placeholder="写下你的评论..." required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">提交评论</button>
+</form>
+{% endblock %}

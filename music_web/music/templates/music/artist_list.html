@@ -1,0 +1,21 @@
+{% extends 'music/base.html' %}
+{% block content %}
+<h2 class="mb-4">歌手列表</h2>
+<div class="row">
+    {% for artist in artists %}
+    <div class="col-md-3 mb-4">
+        <div class="card h-100">
+            <a href="{% url 'artist_detail' artist.id %}">
+                <img src="{{ artist.pic_url }}" class="card-img-top" alt="{{ artist.name }}">
+            </a>
+            <div class="card-body">
+                <h6 class="card-title"><a href="{% url 'artist_detail' artist.id %}" class="text-decoration-none">{{ artist.name }}</a></h6>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>暂无歌手</p>
+    {% endfor %}
+</div>
+{% include 'music/pagination.html' with page_obj=artists %}
+{% endblock %}
